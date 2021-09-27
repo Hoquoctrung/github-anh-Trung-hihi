@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BEM Practice</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>  
+    <div id="toast"></div>
+
+    <div id="btn">
+            <div onclick="ShowSuccessToast()" class="btn btn--succeed"> SHOW SUCCESS TOAST</div>
+            <div onclick="ShowErrorToast()" class="btn btn--error"> SHOW ERROR TOAST</div>
+    </div>
+
+    <script>
+        // Toast function
+        function toast({
+            title = '',
+            message = '',
+            type = 'info',
+            duration = 3000,
+        }) {
+            const main = document.getElementById('toast');
+            const delay = (duration / 1000).toFixed(2);
+            const timeOut = duration + 1000;
+            if (main) {
+                const toast = document.createElement('div');
+                const icons = {
+                    success:'fas fa-check-circle',
+                    info:'fas fa-info-circle',
+                    warning:'fas fa-exclamation-triangle',
+                    error:'fas fa-exclamation-triangle'
+                };
+                const icon = icons[type];
+
+                toast.classList.add('toast',`toast--${type}`);
+                toast.style.animation = `slideInLeft ease .3s, fadeOut ease 1s ${delay}s forwards`;
+
+                toast.innerHTML = `
+                    <div class="toast__icon">
+                        <i class="${icon}"></i>
+                    </div>
+                    <div class="toast__body">
+                        <h3 class="toast__title">${title}</h3>
+                        <p class="toast__msg">${message}</p>
+                    </div>
+                    <div class="toast__close">
+                        <i class="fa fa-times" ></i>    
+                    </div>
+                `;
+                main.appendChild(toast);
+                setTimeout(function() {
+                    main.removeChild(toast)
+                }, timeOut)
+            }
+        }
+        function ShowSuccessToast() {
+            toast({
+                title: 'Thành công',
+                message: 'Chúc mừng bạn đã thành công trở thành một fullstack developer.',
+                type: 'success',
+                duration: 1000,
+            });
+        };
+
+        function ShowErrorToast() {
+            toast({
+                title: 'Thất bại',
+                message: 'Có lỗi xảy ra trên đường bạn trở thành fullstack developer. Hãy fig bux đi.',
+                type: 'error',
+                duration: 3000,
+            }); 
+        }
+    </script>
+</body>
+</html>
